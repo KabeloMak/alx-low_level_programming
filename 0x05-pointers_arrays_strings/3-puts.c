@@ -1,5 +1,4 @@
 #include "main.h"
-#include "_putchar.c"
 
 /**
  * _puts - function that prints a string
@@ -8,14 +7,18 @@
  */
 
 void _puts(char *str)
-
 {
-	int i = 0;
+	int count = 0;
 
-	while (str[i])
+	while (count >= 0)
 	{
-		_putchar (str[i]);
-		i++;
+		if (str[count] == '\0')
+		{
+			_putchar('\n');
+			break;
+		}
+		_putchar(str[count]);
+		count++;
 	}
-	_putchar ('\n');
 }
+
