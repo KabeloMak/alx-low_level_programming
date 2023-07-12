@@ -3,48 +3,62 @@
 #include <stdlib.h>
 
 /**
- * *argstostr - convert arguments on command line to strings
- * @ac: int type
- * @av: pointer to array
- * Return: arguments as strings
+ * strtow - concatenates all the arguments of your program
+ *@str: string
+ *@av: arguments
+ * Return: a pointer to a new string
  */
-
-char *argstostr(int ac, char **av)
+char **strtow(char *str)
 {
-	int size, count, count1, count2 = 0;
-	char *ptr;
+	int i, w, j, k, count, m, wordf;
+	char **p;
+	char *x;
 
-	if (ac == 0 || av == NULL)
-	{
+	w = 0;
+	j = 0;
+	i = 0;
+	count = 0;
+	if (*str == '\0' || str == NULL)
 		return (NULL);
-	}
-
-	for (count = 0; count < ac; count++)
+	for (i = 0; str[i] != '\0'; i++)
 	{
-		for (count1 = 0; av[count][count1] != '\0'; count1++)
-		{
-			size += 1;
-		}
-		size += 1;
+		if (str[i] == ' ' && (str[i + 1] != ' ' || str[i + 1] == '\0'))
+			w++;
 	}
-	size += 1;
-
-	ptr = malloc(sizeof(char) * size);
-	if (ptr == NULL)
-	{
-		free(ptr);
+	p = (char **)malloc((w + 1) * sizeof(char *));
+	if (p == NULL)
 		return (NULL);
-	}
-	for (count = 0; count < ac; count++)
+	for (wordf = 0; str[wordf] && j <= w; wordf++)
 	{
-		for (count1 = 0; av[count][count1] != '\0'; count1++)
+		count = 0;
+		if (str[wordf] != ' ')
 		{
-			ptr[count2] = av[count][count1];
-			count2++;
+			for (i = wordf ; str[i] != '\0'; i++)
+			{
+				if (str[i] == ' ')
+					break;
+				count++;
+			}
+			*(p + j) = (char *)malloc((count + 1) * sizeof(char));
+			if (*(p + j) == NULL)
+			{
+				for (k = 0; k <= j; k++)
+				{
+					x = p[k];
+					free(x);
+				}
+				free(p);
+				return (NULL);
+			}
+			for (m = 0; wordf < i; wordf++)
+			{
+				p[j][m] = str[wordf];
+				m++;
+			}
+			p[j][m] = '\0';
+			j++;
 		}
-		ptr[count2] = '\n';
-		count2++;
 	}
-	ptr[count2] = '\0';
-	return (ptr);
+	p[j] = NULL;
+	return (p);
 }
